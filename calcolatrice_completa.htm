@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SILVIOLATRICE</title>
+	<style type="text/css">
+		#calc {
+			border: solid yellow 2px;
+			width: 180px;
+			height: 240px;
+			border-radius: 20px;
+			text-align: center;
+			background-color: blue;
+			position: relative;
+		}
+		.float {
+			float: left;
+		}
+		#numbers {
+			width: 130px;
+			height: 150px;
+			margin-top: 2px;
+		}
+		#operations {
+			border: solid yellow 2px;
+			width: 42px;
+			height: 179px;
+			border-radius: 20px;
+		}
+		#negativi {
+			font-size: 14px;
+			padding-left: 2px;
+		}
+		#uguale{
+			border: solid black 2px;
+			width: 90px;
+			height: 30px;
+			font-size: 18px;
+			text-align: center;
+			border-radius: 20px;
+			background-color: yellow;
+		}
+		textarea {
+			min-width: 160px;
+			min-height: 30px;
+			max-width: 160px;
+			max-height: 30px;
+			font-size: 24px;
+			text-align: right;
+			border-radius: 20px;
+			border: solid black 2px;
+		}
+		button {
+			border: solid black 2px;
+			width: 30px;
+			height: 30px;
+			font-size: 18px;
+			text-align: center;
+			border-radius: 20px;
+			background-color: yellow;
+			margin-top: 5px;
+		}
+		label {
+			color: yellow;
+			font-weight: bold;
+		}
+	</style>
+	<script>
+		class calcolatrice{
+			constructor(operatore1, operatore2){
+				this.operatore1 = operatore1;
+				this.operatore2 = operatore2;
+				this.segno = "+";
+			}
+			setOperatore1(operatore) {
+				if (operatore.charAt(0) == ".") {operatore = "0" + operatore;}
+				this.operatore1 = parseFloat(operatore);
+			}
+			setOperatore2(operatore) {
+				if (operatore.charAt(0) == ".") {operatore = "0" + operatore;}
+				this.operatore2 = parseFloat(operatore);
+			}
+			setSegno(segno) {
+				this.segno = segno;
+			}
+
+			somma() {
+				return this.operatore1 + this.operatore2;
+			}
+
+			sottrazione() {
+				return this.operatore1 - this.operatore2;
+			}
+
+			moltiplicazione() {
+				return this.operatore1 * this.operatore2;
+			}
+
+			divisione() {
+				if (this.operatore2 != 0) return this.operatore1 / this.operatore2;
+				else return "ERRORE";
+			}
+
+			risultato() {
+				switch(this.segno) {
+					case "+": return this.somma();
+					case "-": return this.sottrazione();
+					case "*": return this.moltiplicazione();
+					case "/": return this.divisione();
+				}
+			}
+		}
+
+		var operazione = new calcolatrice(0,0,"+");
+
+		function pulisci(){
+			document.getElementById("text").value = "";
+		}
+
+		function inserisciNumero(numero){
+			var num = document.getElementById("text").value;
+
+			if (numero == "." && str.includes(".")) {
+				document.getElementById("text").value = num;
+			}
+
+			else {
+					document.getElementById("text").value += numero;
+			}
+		}
+
+		function cambiaSegno() {
+			var num = document.getElementById('text').value;
+			if (num.charAt(0) == "-") {
+				num = num.substring(1, num.length);
+				document.getElementById('text').value = num;
+			}
+			else {
+				document.getElementById('text').value = "-" + num;
+			}
+		}
+
+		function scriviRisultato(risultato) {
+			document.getElementById('text').value = operazione.risultato();
+		}
+	</script>
+</head>
+<body>
+	<div id="calc">
+	<form class="container">
+			<label for="text">SILVIOLATRICE</label>
+			<br>
+			<textarea id="text" readonly="readonly" maxlength="11"></textarea>
+			<br>
+			<div id="numbers" class="float">
+				<button type="button" onclick="inserisciNumero(1)">1</button>
+				<button type="button" onclick="inserisciNumero(2)">2</button>
+				<button type="button" onclick="inserisciNumero(3)">3</button>
+				<br>
+				<button type="button" onclick="inserisciNumero(4)">4</button>
+				<button type="button" onclick="inserisciNumero(5)">5</button>
+				<button type="button" onclick="inserisciNumero(6)">6</button>
+				<br>
+				<button type="button" onclick="inserisciNumero(7)">7</button>
+				<button type="button" onclick="inserisciNumero(8)">8</button>
+				<button type="button" onclick="inserisciNumero(9)">9</button>
+				<br>
+				<button id="negativi" type="button" onclick="cambiaSegno()">+/-</button>
+				<button type="button" onclick="inserisciNumero(0)">0</button>
+				<button type="button" onclick="inserisciNumero('.')">.</button>
+				<br>
+				<button type="button" id="uguale" onclick="operazione.setOperatore2(document.getElementById('text').value); scriviRisultato(operazione.risultato())">=</button>
+			</div>
+			<div id="operations" class="float">
+				<button type="button" id="clear" onclick="pulisci()">C</button>
+				<button type="button" id="add" onclick="operazione.setOperatore1(document.getElementById('text').value); pulisci(); operazione.setSegno('+')">+</button>
+				<button type="button" id="sub" onclick="operazione.setOperatore1(document.getElementById('text').value); pulisci(); operazione.setSegno('-')">-</button>
+				<button type="button" id="mol" onclick="operazione.setOperatore1(document.getElementById('text').value); pulisci(); operazione.setSegno('*')">x</button>
+				<button type="button" id="div" onclick="operazione.setOperatore1(document.getElementById('text').value); pulisci(); operazione.setSegno('/')">/</button>
+			</div>
+	</form>
+</body>
+</html>
